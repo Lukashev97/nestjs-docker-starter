@@ -1,0 +1,23 @@
+# Используем Node.js образ
+FROM node:18-alpine
+
+# Устанавливаем рабочую директорию
+WORKDIR /usr/src/app
+
+# Копируем файлы package.json и package-lock.json
+COPY package*.json ./
+
+# Устанавливаем зависимости
+RUN npm install
+
+# Копируем все файлы проекта
+COPY . .
+
+# Устанавливаем переменную окружения для разработки
+ENV NODE_ENV=development
+
+# Открываем порт
+EXPOSE 3000
+
+# Устанавливаем команду по умолчанию для запуска приложения
+CMD ["npm", "run", "start:dev"]

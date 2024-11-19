@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.staging
+    container_name: nestjs_app_staging
+    env_file:
+      - .env.staging
+    ports:
+      - "3500:3000" # Приложение доступно на порту 3500
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: staging_password
+      POSTGRES_DB: nestjs_staging_db
+    ports:
+      - "5434:5432" # База доступна на порту 5434 для тестирования
+    volumes:
+      - postgres_staging_data:/var/lib/postgresql/data # Сохранение данных базы для staging
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_staging_data:

@@ -1,0 +1,15 @@
+FROM node:18
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+# Установка всех зависимостей, включая devDependencies (для тестирования)
+RUN npm install
+
+COPY . .
+
+# Сборка приложения
+RUN npm run build
+
+CMD ["node", "dist/main"]

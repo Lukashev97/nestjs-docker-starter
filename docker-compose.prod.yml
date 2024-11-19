@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: nestjs_app_prod
+    env_file:
+      - .env.production
+    ports:
+      - "4000:3000" # Приложение доступно на порту 4000 в проде
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: prod_password
+      POSTGRES_DB: nestjs_prod_db
+    ports:
+      - "5432:5432" # База доступна на порту 5432 для приложения
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Сохранение данных
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
