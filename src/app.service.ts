@@ -1,27 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 
 @Injectable()
 export class AppService {
-  constructor(
-    private configService: ConfigService,
-    private readonly dataSource: DataSource,
-  ) {}
-
-  getHello(): any {
-    return this.getDatabaseConfig();
-  }
-
-  getDatabaseConfig() {
-    return {
-      host: this.configService.get<string>('DATABASE_HOST'),
-      port: this.configService.get<number>('DATABASE_PORT'),
-      user: this.configService.get<string>('DATABASE_USER'),
-      password: this.configService.get<string>('DATABASE_PASSWORD'),
-      name: this.configService.get<string>('DATABASE_NAME'),
-    };
-  }
+  constructor(private readonly dataSource: DataSource) {}
 
   // Метод для тестирования соединения с БД
   async testDatabaseConnection(): Promise<string> {
