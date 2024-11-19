@@ -7,7 +7,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @ApiOperation({ summary: 'Тест соединения с БД' });
+  @ApiOperation({ summary: 'Тест соединения с БД' })
   @ApiResponse({
     status: 200,
     description: 'Connection to the database is successful!',
