@@ -1,73 +1,209 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+### Документация по проекту
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+---
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 1. **Описание проекта**
 
-## Description
+Проект представляет собой API, созданный на основе **Nest.js**, с использованием **TypeScript**. Для деплоя используются контейнеры Docker, а также окружения для разработки, стейджинга и продакшена.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Installation
+## 2. **Установка и настройка проекта**
+
+### 2.1. **Клонирование репозитория**
+
+Склонируйте проект из Git-репозитория:
 
 ```bash
-$ npm install
+git clone <URL_репозитория>
+cd testapi
 ```
 
-## Running the app
+### 2.2. **Установка зависимостей**
+
+Убедитесь, что у вас установлен **Node.js** (рекомендуемая версия: `18.x`) и менеджер пакетов `npm`.
+
+Установите зависимости:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Test
+---
+
+## 3. **Запуск проекта локально**
+
+### 3.1. **Запуск без Docker**
+
+1. Настройте `.env.development` файл в корне проекта (он уже добавлен в проект).
+
+   Пример `.env.development`:
+   ```env
+   PORT=3000
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USER=postgres
+   DB_PASSWORD=example
+   DB_NAME=testapi_dev
+   ```
+
+2. Запустите PostgreSQL локально (если не используется Docker) и создайте базу данных, указанную в `.env`.
+
+3. Запустите проект:
+
+   ```bash
+   npm run start:dev
+   ```
+
+Приложение будет доступно по адресу [http://localhost:3000](http://localhost:3000).
+
+---
+
+### 3.2. **Запуск через Docker (локально)**
+
+1. Настройте `docker-compose.dev.yml`. Пример файла уже добавлен в проект.
+
+2. Соберите и запустите контейнеры:
+
+   ```bash
+   docker-compose -f docker-compose.dev.yml up --build
+   ```
+
+3. После запуска API будет доступен на [http://localhost:3000](http://localhost:3000).
+
+---
+
+## 4. **Развертывание на стейджинг**
+
+### 4.1. **Подготовка к деплою**
+
+1. Настройте файл `.env.staging`. Пример:
+   ```env
+   PORT=3000
+   NODE_ENV=staging
+   DB_HOST=db
+   DB_PORT=5433
+   DB_USER=postgres
+   DB_PASSWORD=example
+   DB_NAME=testapi_staging
+   ```
+
+2. Проверьте корректность файла `docker-compose.staging.yml`.
+
+---
+
+### 4.2. **Запуск контейнеров**
+
+Выполните команду:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+docker-compose -f docker-compose.staging.yml up -d --build
 ```
 
-## Support
+API будет доступен на сервере, на указанном порту.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## 5. **Развертывание в продакшен**
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 5.1. **Подготовка к деплою**
 
-## License
+1. Настройте файл `.env.production`. Пример:
+   ```env
+   PORT=3000
+   NODE_ENV=production
+   DB_HOST=db
+   DB_PORT=5432
+   DB_USER=postgres
+   DB_PASSWORD=securepassword
+   DB_NAME=testapi_prod
+   ```
 
-Nest is [MIT licensed](LICENSE).
+2. Проверьте корректность файла `docker-compose.prod.yml`.
+
+---
+
+### 5.2. **Запуск контейнеров**
+
+Выполните команду:
+
+```bash
+docker-compose -f docker-compose.prod.yml up -d --build
+```
+
+Приложение будет развернуто в продакшене.
+
+---
+
+## 6. **Тестирование API**
+
+### 6.1. **Swagger**
+
+Для документации API используется **Swagger**. После запуска приложения Swagger доступен по адресу:
+
+```
+http://localhost:3000/api
+```
+
+### 6.2. **Юнит-тесты**
+
+Чтобы запустить тесты, выполните:
+
+```bash
+npm run test
+```
+
+---
+
+## 7. **Основные команды**
+
+| Команда                        | Описание                                       |
+|--------------------------------|-----------------------------------------------|
+| `npm run start:dev`            | Запуск приложения в режиме разработки         |
+| `docker-compose up --build`    | Сборка и запуск контейнеров                   |
+| `npm run test`                 | Запуск юнит-тестов                            |
+| `npm run build`                | Сборка приложения                             |
+| `docker-compose logs -f`       | Просмотр логов Docker-контейнеров             |
+
+---
+
+## 8. **Обновление приложения**
+
+1. Зайдите на сервер.
+2. Перейдите в директорию с проектом:
+
+   ```bash
+   cd testapi
+   ```
+
+3. Обновите проект из репозитория:
+
+   ```bash
+   git pull origin main
+   ```
+
+4. Перезапустите контейнеры:
+
+   ```bash
+   docker-compose -f docker-compose.prod.yml up -d --build
+   ```
+
+---
+
+## 9. **Резервное копирование базы данных**
+
+Создание бэкапа:
+
+```bash
+docker exec -t <db-container-name> pg_dump -U postgres <db-name> > backup.sql
+```
+
+Восстановление бэкапа:
+
+```bash
+docker exec -i <db-container-name> psql -U postgres <db-name> < backup.sql
+```
+
+---
+
+Если у вас есть дополнительные вопросы, пишите!
