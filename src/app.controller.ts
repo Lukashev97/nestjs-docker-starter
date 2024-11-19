@@ -11,7 +11,7 @@ export class AppController {
   @ApiResponse({
     status: 200,
     description: 'Connection to the database is successful!',
-  })
+  });
   @ApiResponse({
     status: 403,
     description:
